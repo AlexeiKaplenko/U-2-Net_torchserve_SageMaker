@@ -26,6 +26,7 @@ RUN pip install albumentations \
     "sentencepiece<0.1.90" \
     spacy \
     tensorboard \
+    torch \
     wandb
 
 # TORCHSERVE
@@ -47,11 +48,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
 RUN git clone https://github.com/pytorch/serve.git
 RUN pip install ./serve/
 
-COPY ./deployment/dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
+COPY dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
 RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
 
 RUN mkdir -p /home/model-server/ && mkdir -p /home/model-server/tmp
-COPY ./deployment/config.properties /home/model-server/config.properties
+COPY config.properties /home/model-server/config.properties
 
 WORKDIR /home/model-server
 ENV TEMP=/home/model-server/tmp
